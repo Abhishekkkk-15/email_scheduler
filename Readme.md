@@ -65,7 +65,7 @@ Built with **React**, **React Flow**, **Node.js**, **Agenda**, and **Nodemailer*
 Clone the repo:
 
 ```bash
-git clone https://github.com/yourusername/email-schedular.git
+git clone https://github.com/Abhishekkkk-15/email-schedular.git
 cd email-schedular 
 ```
 
