@@ -41,7 +41,7 @@ function FlowPage({ logedUser, setLogedUser }) {
     const newNode = {
       id,
       type,
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      position: { x: 200, y:  200 },
       data: {
         label: type,
         subject: "",
@@ -111,7 +111,7 @@ function FlowPage({ logedUser, setLogedUser }) {
   };
 
   return (
-    <div className="bg-black h-full w-full ">
+    <div className="bg-black h-full w-full overflow-x-hidden">
       <LeadSourceDialog
         isOpen={showLeadDialog}
         onClose={() => setShowLeadDialog()}
@@ -136,8 +136,8 @@ function FlowPage({ logedUser, setLogedUser }) {
         onClose={() => setShowHistory(!showHistory)}
         logedUser={logedUser}
       />
-      <div className="h-[50px] w-[100%] flex items-center justify-between pl-2 pr-2 rounded-2xl bg-transparent fixed ">
-        <div className="flex flex-row gap-3 rounded-2xl items-center  bg-transparent h-full w-full">
+      <div className="h-[50px] w-[100%] flex items-center justify-between pl-2 pr-2 rounded-2xl bg-transparent ">
+        <div className="flex flex-row gap-3 rounded-2xl items-center  bg-transparent h-full w-full ">
           <button
             onClick={() => setShowLeadDialog(!showLeadDialog)}
             className="bg-gray-400 text-white h-[35px]  sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px] rounded-2xl"
@@ -194,7 +194,7 @@ function FlowPage({ logedUser, setLogedUser }) {
         </div>
       </div>
 
-      <div className=" bg-black ">
+      <div className=" bg-black overflow-hidden ">
         <FlowBuilder
           nodes={nodes}
           setNodes={setNodes}
