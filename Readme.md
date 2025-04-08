@@ -98,6 +98,6 @@ Acknowledgements:
 - **Agenda** for job scheduling
 - **Nodemailer** for handling emails
 
-**Live** : https://sdfsdfdffafdfsd/sdfsdfsfs
+**Live** : https://email-scheduler-vg44.onrender.com/
 
 
