@@ -43,7 +43,8 @@ mongoose
 app.use("/api/auth", userRoute);
 app.use("/api/flow", auth, flowRoute);
 app.use(express.static(path.join(__dirname, "dist")));
-app.get("*", (req, res) => {
+
+app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 

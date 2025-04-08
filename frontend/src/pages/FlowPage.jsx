@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import FlowBuilder from "../components/FlowBuilder";
-import { MdHistory } from "react-icons/md";
+import { MdClear, MdHistory, MdOutlineMailOutline } from "react-icons/md";
 import ReactFlow, { addEdge, useNodesState, useEdgesState } from "reactflow";
 import "reactflow/dist/style.css";
 import ColdEmailNode from "../components/ColdEmailNode";
@@ -11,7 +11,9 @@ import ColdEmailDialog from "../components/ColdEmailDialog";
 import WaitDialog from "../components/WaitDialog";
 import HistoryDialog from "../components/HistoryDialog";
 import { logoutUser, scheduleEmail } from "../api/api";
-import { CiLogout } from "react-icons/ci";
+import { CiLogout, CiNoWaitingSign } from "react-icons/ci";
+import { MdDataSaverOn,MdOutlineLeaderboard } from "react-icons/md";
+
 const nodeTypes = {
   coldEmail: ColdEmailNode,
   wait: WaitNode,
@@ -109,7 +111,7 @@ function FlowPage({ logedUser, setLogedUser }) {
   };
 
   return (
-    <div className="bg-black h-full w-full " >
+    <div className="bg-black h-full w-full ">
       <LeadSourceDialog
         isOpen={showLeadDialog}
         onClose={() => setShowLeadDialog()}
@@ -134,38 +136,54 @@ function FlowPage({ logedUser, setLogedUser }) {
         onClose={() => setShowHistory(!showHistory)}
         logedUser={logedUser}
       />
-      <div className="h-[50px] w-[100%] flex items-center justify-between pl-2 pr-2 rounded-2xl bg-transparent ">
+      <div className="h-[50px] w-[100%] flex items-center justify-between pl-2 pr-2 rounded-2xl bg-transparent fixed ">
         <div className="flex flex-row gap-3 rounded-2xl items-center  bg-transparent h-full w-full">
           <button
             onClick={() => setShowLeadDialog(!showLeadDialog)}
             className="bg-gray-400 text-white h-[35px]  sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px] rounded-2xl"
           >
-            Add Lead Source
+           <div className="hidden lg:block">Add Lead Source</div> 
+            <div className="flex justify-center lg:hidden ">
+              <MdOutlineLeaderboard size={22} />
+            </div>
           </button>
           <button
             onClick={() => setColdEmailDialog(!showColdEmailDialog)}
             className="bg-gray-400 text-white h-[35px] sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px]  rounded-2xl"
           >
-            Add Cold Email
+           <div className="hidden lg:block">Add Cold Email</div> 
+            <div className="flex justify-center lg:hidden ">
+              <MdOutlineMailOutline size={22} />
+            </div>
           </button>
           <button
             onClick={() => setshowWaitDialog(!showWaitDialog)}
             className="bg-gray-400 text-white h-[35px] sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px] rounded-2xl"
           >
-            Add Wait
+           <div className="hidden lg:block"> Add Wait</div>
+            <div className="flex justify-center lg:hidden ">
+              <CiNoWaitingSign size={22} />
+            </div>
           </button>
           <button
             onClick={handleClear}
             className="bg-gray-400 text-white  h-[35px] sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px]  rounded-2xl"
           >
-            Clear </button>
+            <div className="hidden lg:block">Clear</div>
+            <div className="flex justify-center lg:hidden ">
+              <MdClear size={22} />
+            </div>
+          </button>
         </div>
         <div className="flex flex-row gap-3">
           <button
             onClick={() => save()}
             className="bg-gray-400 text-white h-[35px] sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px] rounded-2xl"
           >
-            Save
+            <div className="hidden lg:block">Save</div>
+            <div className="flex justify-center lg:hidden ">
+              <MdDataSaverOn size={22} />
+            </div>
           </button>
           <button onClick={() => setShowHistory(!showHistory)} className="">
             <MdHistory size={22} color="white" />
