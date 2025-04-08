@@ -20,7 +20,7 @@ function App() {
     })();
   }, []);
   return (
-    < div className=" bg-transparent " >
+    < div className=" bg-transparent overflow-x-hidden" >
       {logedUser ? (
         <FlowPage logedUser={logedUser} setLogedUser={setLogedUser}  />
       ) : (

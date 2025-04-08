@@ -13,7 +13,7 @@ import "reactflow/dist/style.css";
 export default function FlowBuilder({nodes,setNodes,onNodesChange,edges,setEdges,showSelect,onEdgesChange,initialNodes,initialEdges,onConnect,nodeTypes}) {
 
   return (
-    <div style={{ height: "100vh" , width:"100%"}}>
+    <div style={{ height: "93vh" , width:"100%"}}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
