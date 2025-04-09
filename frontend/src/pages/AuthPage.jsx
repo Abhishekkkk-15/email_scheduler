@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
-function AuthPage({setLogedUser}) {
+function AuthPage({ setLogedUser }) {
   const [isLogin, setIsLogin] = useState(true);
 
   const handleSuccess = (user) => {
-    console.log("User logged in:", user);
-    if(user)  setLogedUser(user)
-   
+    if (user) {
+      return setLogedUser(user);
+    }
+    return;
   };
 
   return (
@@ -23,7 +24,9 @@ function AuthPage({setLogedUser}) {
         onClick={() => setIsLogin(!isLogin)}
         className="mt-4 text-sm cursor-pointer underline"
       >
-        {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
+        {isLogin
+          ? "Don't have an account? Sign Up"
+          : "Already have an account? Login"}
       </button>
     </div>
   );

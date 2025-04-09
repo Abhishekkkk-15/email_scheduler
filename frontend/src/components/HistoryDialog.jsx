@@ -4,13 +4,13 @@ import { deleteFlow, userScheduleHistory } from "../api/api";
 
 function HistoryDialog({ isOpen, onClose,logedUser }) {
   const [history, setHistory] = useState([]);
-
+//Fetching user scheduled email or flow by userId
   const fetchHistory = async () => {
     try {
       const { data } = await userScheduleHistory(logedUser._id)
       setHistory(data?.data);
     } catch (error) {
-      console.error("Error fetching history:", error);
+      console.error("Error fetching history:", error?.message);
     }
   };
 
@@ -19,14 +19,13 @@ function HistoryDialog({ isOpen, onClose,logedUser }) {
       fetchHistory();
     }
   }, [isOpen]);
-
+//Deleting whole flow
   const handleDelete = async (flowId) => {
     try {
-      console.log(flowId)
       await deleteFlow(flowId)
       setHistory((prev) => prev.filter((flow) => flow._id !== flowId));
     } catch (error) {
-      console.error("Error deleting flow:", error);
+      console.error("Error deleting flow:", error?.message);
       alert("Failed to delete flow.");
     }
   };

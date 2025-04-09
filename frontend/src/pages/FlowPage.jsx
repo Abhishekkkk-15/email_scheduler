@@ -12,8 +12,9 @@ import WaitDialog from "../components/WaitDialog";
 import HistoryDialog from "../components/HistoryDialog";
 import { logoutUser, scheduleEmail } from "../api/api";
 import { CiLogout, CiNoWaitingSign } from "react-icons/ci";
-import { MdDataSaverOn,MdOutlineLeaderboard } from "react-icons/md";
+import { MdDataSaverOn, MdOutlineLeaderboard } from "react-icons/md";
 
+//Custom nodes 
 const nodeTypes = {
   coldEmail: ColdEmailNode,
   wait: WaitNode,
@@ -22,13 +23,15 @@ const nodeTypes = {
 function FlowPage({ logedUser, setLogedUser }) {
   const initialNodes = [];
   const initialEdges = [];
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [showSelect, setShowSelect] = useState(false);
 
   const [showLeadDialog, setShowLeadDialog] = useState(false);
   const [showWaitDialog, setshowWaitDialog] = useState(false);
   const [showColdEmailDialog, setColdEmailDialog] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-
+  //Function to add new nodes and edges
   const addNewNode = ({
     type,
     emailType = "",
@@ -37,11 +40,10 @@ function FlowPage({ logedUser, setLogedUser }) {
     body = "",
   }) => {
     const id = `${Date.now()}`;
-    console.log(body);
     const newNode = {
       id,
       type,
-      position: { x: 200, y:  200 },
+      position: { x: 200, y: 200 },
       data: {
         label: type,
         subject: "",
@@ -55,9 +57,7 @@ function FlowPage({ logedUser, setLogedUser }) {
     setNodes((nds) => [...nds, newNode]);
     console.log(nodes, edges);
   };
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
+  //To connect edges
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     []
@@ -67,12 +67,11 @@ function FlowPage({ logedUser, setLogedUser }) {
     if (nodes.length == 0 || edges.length == 0) {
       return alert("Lead source or Cold Email not provided");
     }
-    console.log(nodes, edges);
-
+    //Check to find the number of lead sources
     const leadSourceAvailable = nodes.filter((n) => n.type == "leadSource");
-    console.log(leadSourceAvailable);
     if (leadSourceAvailable.length == 0)
       return alert("Lead source or Cold/Email not provided");
+    //If lead source more then 1 then return from function
     if (leadSourceAvailable.length > 1)
       return alert("One Email Schedule at a time");
 
@@ -80,11 +79,11 @@ function FlowPage({ logedUser, setLogedUser }) {
       const { data } = scheduleEmail(logedUser._id, nodes, edges);
       alert("Email Scheduled");
     } catch (error) {
-      alert(error);
+      alert(error.message);
       console.log(error);
     }
   };
-
+  //Logout function
   const handleLogout = async () => {
     let result = confirm("Are you sure want to logout");
     if (result) {
@@ -99,7 +98,7 @@ function FlowPage({ logedUser, setLogedUser }) {
     }
     return;
   };
-
+  //CLear all nodes and edges
   const handleClear = () => {
     let result = confirm("Are you sure want to clear nodes");
     if (result) {
@@ -142,7 +141,7 @@ function FlowPage({ logedUser, setLogedUser }) {
             onClick={() => setShowLeadDialog(!showLeadDialog)}
             className="bg-gray-400 text-white h-[35px]  sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px] rounded-2xl"
           >
-           <div className="hidden lg:block">Add Lead Source</div> 
+            <div className="hidden lg:block">Add Lead Source</div>
             <div className="flex justify-center lg:hidden ">
               <MdOutlineLeaderboard size={22} />
             </div>
@@ -151,7 +150,7 @@ function FlowPage({ logedUser, setLogedUser }) {
             onClick={() => setColdEmailDialog(!showColdEmailDialog)}
             className="bg-gray-400 text-white h-[35px] sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px]  rounded-2xl"
           >
-           <div className="hidden lg:block">Add Cold Email</div> 
+            <div className="hidden lg:block">Add Cold Email</div>
             <div className="flex justify-center lg:hidden ">
               <MdOutlineMailOutline size={22} />
             </div>
@@ -160,7 +159,7 @@ function FlowPage({ logedUser, setLogedUser }) {
             onClick={() => setshowWaitDialog(!showWaitDialog)}
             className="bg-gray-400 text-white h-[35px] sm:w-[90px] sm:text-[12px] lg:text-[16px] lg:w-[150px] rounded-2xl"
           >
-           <div className="hidden lg:block"> Add Wait</div>
+            <div className="hidden lg:block"> Add Wait</div>
             <div className="flex justify-center lg:hidden ">
               <CiNoWaitingSign size={22} />
             </div>
