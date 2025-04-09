@@ -10,7 +10,7 @@ function ColdEmailDialog({ isOpen, onClose, addNewNode }) {
       addNewNode("coldEmail", selectedType, email, body);
       onClose();
     } else {
-      alert("Please fill in all fields.");
+      alert("Please fill all the fields.");
     }
   };
 

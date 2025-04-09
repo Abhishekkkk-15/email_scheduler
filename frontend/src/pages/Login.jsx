@@ -11,7 +11,6 @@ function Login({ onSuccess }) {
 
     try {
       const { data } = await loginUser(email,password)
-      console.log("Login success:", data);
       onSuccess(data?.userInfo);
     } catch (error) {
       console.error(error?.message);

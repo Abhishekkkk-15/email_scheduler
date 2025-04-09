@@ -7,8 +7,7 @@ function WaitDialog({ isOpen, onClose, addNewNode }) {
 
   const handleConfirm = () => {
     const parsedDelay = parseInt(delay);
-    if (!isNaN(parsedDelay) && parsedDelay > 0) {
-      console.log("Delay:", parsedDelay);
+    if (parsedDelay > 0) {
       addNewNode("wait", "parsedDelay",parsedDelay);
       onClose();
     }
