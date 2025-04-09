@@ -24,6 +24,8 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
+//medaleWare to add JWT payload to user Request
 app.use((req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
@@ -32,18 +34,17 @@ app.use((req, res, next) => {
   }
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   req.user = decoded;
-  console.log("its comming here");
   next();
 });
+// MongoDB database connection
 mongoose
-  .connect(
-    "mongodb+srv://mrabhi748:abhishek1122@cluster0.1s9sife.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-  )
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"));
 app.use("/api/auth", userRoute);
+//Auth medaleWare is to prevent unAunticated user to access
 app.use("/api/flow", auth, flowRoute);
+//Serving static files (Frontend)
 app.use(express.static(path.join(__dirname, "dist")));
-
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
