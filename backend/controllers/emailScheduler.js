@@ -1,7 +1,7 @@
 import { Flow } from "../models/schema.js";
 import { agenda } from "../agenda/agenda.js";
 
-//Function to get next node by edge,cause edges store's the source and target
+//Function to get next node by edge
 function getNextNode(nodeId, edges) {
   const edge = edges.find((e) => e.source === nodeId);
   return edge ? edge.target : null;
