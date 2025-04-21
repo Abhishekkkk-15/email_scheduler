@@ -21,11 +21,14 @@ function App() {
   }, []);
   return (
     < div className=" bg-transparent overflow-x-hidden" >
-      {logedUser ? (
+      {/* {logedUser ? (
         <FlowPage logedUser={logedUser} setLogedUser={setLogedUser}  />
       ) : (
         <AuthPage logedUser={logedUser} setLogedUser={setLogedUser} />
-      )}
+      )} */}
+                <FlowPage logedUser={logedUser} setLogedUser={setLogedUser}  />
+
+
     </div>
   );
 }

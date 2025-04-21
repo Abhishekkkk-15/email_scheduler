@@ -14,7 +14,7 @@ import { logoutUser, scheduleEmail } from "../api/api";
 import { CiLogout, CiNoWaitingSign } from "react-icons/ci";
 import { MdDataSaverOn, MdOutlineLeaderboard } from "react-icons/md";
 
-//Custom nodes 
+//Custom nodes
 const nodeTypes = {
   coldEmail: ColdEmailNode,
   wait: WaitNode,
@@ -58,10 +58,9 @@ function FlowPage({ logedUser, setLogedUser }) {
     console.log(nodes, edges);
   };
   //To connect edges
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
+  const onConnect = useCallback((params) => {
+    setEdges((eds) => addEdge(params, eds));
+  });
 
   const save = async () => {
     if (nodes.length == 0 || edges.length == 0) {

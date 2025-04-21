@@ -6,6 +6,7 @@ const nodeSchema = new mongoose.Schema({
   data: mongoose.Schema.Types.Mixed,
 });
 
+
 const edgeSchema = new mongoose.Schema({
   source: String,
   target: String,
