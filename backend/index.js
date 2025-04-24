@@ -4,18 +4,19 @@ import cors from "cors";
 import dotenv from "dotenv";
 import flowRoute from "./routes/emailRoutes.js";
 import userRoute from "./routes/userRoutes.js";
+import templateRoute from "./routes/template.js";
 import auth from "./utils/auth.js";
 import cookieParser from "cookie-parser";
 import jwt, { decode } from "jsonwebtoken";
 import path from "path";
 import { fileURLToPath } from "url";
+import { app,server } from './websocket/socketIO.js';
 
 dotenv.config();
 const PORT = process.env.PORT;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -43,12 +44,13 @@ mongoose
 app.use("/api/auth", userRoute);
 //Auth medaleWare is to prevent unAunticated user to access
 app.use("/api/flow", auth, flowRoute);
+app.use("/api/template", auth, templateRoute);
 //Serving static files (Frontend)
 app.use(express.static(path.join(__dirname, "dist")));
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -24,6 +24,9 @@ const flowSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  taskCompleted:{
+    type: Number
+  }
 });
 
 const userSchema = new mongoose.Schema({

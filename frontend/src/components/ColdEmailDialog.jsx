@@ -1,13 +1,18 @@
 import React, { useState } from "react";
+import UseTemplate from "./UseTemplate"; // Adjust the import path as needed
+import { Link, useNavigate } from "react-router-dom";
 
 function ColdEmailDialog({ isOpen, onClose, addNewNode }) {
   const [email, setEmail] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [body, setBody] = useState("");
-  const [selectedType, setSelectedType] = useState("");
+  const [subject, setSubject] = useState("");
+  const [templateName, setTemplateName] = useState([]);
+  const navigate = useNavigate()
 
   const handleConfirm = () => {
-    if (selectedType && email && body) {
-      addNewNode("coldEmail", selectedType, email, body);
+    if (selectedTemplate && email && body) {
+      addNewNode("coldEmail", selectedTemplate, email, body);
       onClose();
     } else {
       alert("Please fill all the fields.");
@@ -18,54 +23,70 @@ function ColdEmailDialog({ isOpen, onClose, addNewNode }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-      <div className="bg-white rounded-xl p-6 w-[400px] shadow-2xl text-black space-y-5">
+      <div className="bg-white rounded-xl p-6 w-[90vw] max-w-4xl shadow-2xl text-black h-[85vh] overflow-hidden flex flex-col gap-4">
         <h2 className="text-2xl font-semibold text-center">Cold Email Setup</h2>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="email" className="text-sm font-medium text-gray-700">
-            Sender Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            placeholder="jhon@gmail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        {/* Email and Type */}
+        <div className="flex gap-6">
+          <div className="flex-1 flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">
+              Sender Email
+            </label>
+            <input
+              type="email"
+              placeholder="john@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="flex-1 flex flex-col gap-2">
+            <label className="text-sm font-medium text-gray-700">
+              Select Template
+            </label>
+            <select
+              value={selectedTemplate || ""}
+              onChange={(e) => {
+                if (e.target.value === "__create__") {
+               
+                  navigate("/template/create_template"); // use useNavigate from react-router-dom
+                } else {
+                  setSelectedTemplate(e.target.value);
+                }
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="" disabled>
+                -- Choose Template --
+              </option>
+              {templateName.map((n, idx) => {
+                return (
+                  <option key={idx} value={n.title}>
+                    {n}
+                  </option>
+                );
+              })}
+
+              <option value="__create__">➕ Create new template</option>
+            </select>
+          </div>
+        </div>
+
+        {/* UseTemplate */}
+        <div className="flex-1 overflow-y-auto">
+          <UseTemplate
+            selectedType={selectedTemplate}
+            onPreviewChange={(html, subjectLine) => {
+              setBody(html);
+              setSubject(subjectLine);
+            }}
+            setTemplateName={setTemplateName}
           />
         </div>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="emailType" className="text-sm font-medium text-gray-700">
-            Email Type
-          </label>
-          <select
-            id="emailType"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="" disabled>-- Select Email Type --</option>
-            <option value="welcomeEmail">Welcome Email</option>
-            <option value="followUpEmail">Follow-up Email</option>
-            <option value="salesEmail">Sales Pitch Email</option>
-            <option value="nurtureEmail">Lead Nurture Email</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <label htmlFor="body" className="text-sm font-medium text-gray-700">Email Body</label>
-          <textarea
-            id="body"
-            rows="5"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Write your email content here..."
-          ></textarea>
-        </div>
-
-        <div className="flex items-center justify-between pt-2">
+        {/* Actions */}
+        <div className="flex justify-between pt-4">
           <button
             onClick={onClose}
             className="text-sm text-gray-600 hover:text-gray-900 underline"
