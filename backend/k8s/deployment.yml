@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler
+  namespace: email-scheduler
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: scheduler
+  template:
+    metadata:
+      labels:
+        app: scheduler
+    spec:
+      containers:
+      - name: email-scheduler
+        image: abhishekkk15/email-scheduler:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_URI
+          value: "mongodb+srv://mrabhi748:abhishek1122@cluster0.1s9sife.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+        - name: EMAIL_USER
+          value: "jangidabhishek276@gmail.com"
+        - name: EMAIL_PASS
+          value: "wihb dagq jfys xgne"
+        - name: JWT_SECRET
+          value: abhishek1122
+        - name: PORT
+          value: "5000"
+          
