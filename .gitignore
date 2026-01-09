@@ -17,3 +17,4 @@ backend/src
 
 # Ignore Docker volumes
 !docker-compose.yml/
+.env
