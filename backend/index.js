@@ -10,7 +10,9 @@ import cookieParser from "cookie-parser";
 import jwt, { decode } from "jsonwebtoken";
 import path from "path";
 import { fileURLToPath } from "url";
-import { app,server } from './websocket/socketIO.js';
+import { app, server } from "./websocket/socketIO.js";
+import "./workers/queue.worker.js";
+import "./workers/csvhandler.worker.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -19,7 +21,7 @@ const __dirname = path.dirname(__filename);
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -40,11 +42,16 @@ app.use((req, res, next) => {
 // MongoDB database connection
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"));
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log("Erro while connecting to db", err));
 app.use("/api/auth", userRoute);
 //Auth medaleWare is to prevent unAunticated user to access
 app.use("/api/flow", auth, flowRoute);
 app.use("/api/template", auth, templateRoute);
+app.post("/api/webhooks/resend", express.json(), (req, res) => {
+  console.log("Webhook received:", req.body);
+  res.sendStatus(200);
+});
 //Serving static files (Frontend)
 app.use(express.static(path.join(__dirname, "dist")));
 app.get(/^\/(?!api).*/, (req, res) => {

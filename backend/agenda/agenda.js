@@ -22,10 +22,9 @@ agenda.define("send email", async (job) => {
 
     const userId = getReciverSocketId(receiverId);
     if (userId) {
-        console.log("its comming here")
       io.to(userId).emit("taskCount", {
         taskCompleted: task.taskCompleted,
-        flowId: id
+        flowId: id,
       });
     }
   } catch (error) {

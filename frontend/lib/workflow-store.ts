@@ -1,0 +1,44 @@
+import { create } from "zustand";
+import { Node, Edge } from "reactflow";
+import { WorkflowNode } from "@/types/workflow";
+
+interface NodeWithData extends Node {
+  data: {
+    config: {
+      senderEmail: string;
+      emailType: string;
+      body: string;
+      subject: string;
+      template: string;
+      mode: "single" | "csv";
+      senderName?: string;
+      singleEmail?: string;
+      csvEmails?: string[];
+    };
+  };
+}
+
+interface WorkflowState {
+  nodes: NodeWithData[];
+  edges: Edge[];
+  setNodes: (nodes: Node[]) => void;
+  setEdges: (edges: Edge[]) => void;
+  addNode: (node: Node) => void;
+  updateNode: (id: string, data: any) => void;
+  clearWorkflow: () => void;
+}
+
+export const useWorkflowStore = create<WorkflowState>((set) => ({
+  nodes: [],
+  edges: [],
+  setNodes: (nodes) => set({ nodes }),
+  setEdges: (edges) => set({ edges }),
+  addNode: (node) => set((state) => ({ nodes: [...state.nodes, node] })),
+  updateNode: (id, data) =>
+    set((state) => ({
+      nodes: state.nodes.map((node) =>
+        node.id === id ? { ...node, data: { ...node.data, ...data } } : node
+      ),
+    })),
+  clearWorkflow: () => set({ nodes: [], edges: [] }),
+}));

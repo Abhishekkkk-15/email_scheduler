@@ -6,7 +6,6 @@ const nodeSchema = new mongoose.Schema({
   data: mongoose.Schema.Types.Mixed,
 });
 
-
 const edgeSchema = new mongoose.Schema({
   source: String,
   target: String,
@@ -18,31 +17,38 @@ const flowSchema = new mongoose.Schema({
   edges: [edgeSchema],
   completed: {
     type: Boolean,
-    default:false
+    default: false,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  taskCompleted:{
-    type: Number
-  }
+  taskCompleted: {
+    type: Number,
+  },
+  status: {
+    type: String,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
 });
 
 const userSchema = new mongoose.Schema({
-  name:{
-    type:String,
-    required:true
+  name: {
+    type: String,
+    required: true,
   },
-  email:{
-    type:String,
-    required:true
+  email: {
+    type: String,
+    required: true,
   },
   password: {
-    type:String,
-    required:true
+    type: String,
+    required: true,
   },
-})
+});
 
 export const Flow = mongoose.model("Flow", flowSchema);
 export const User = mongoose.model("User", userSchema);
