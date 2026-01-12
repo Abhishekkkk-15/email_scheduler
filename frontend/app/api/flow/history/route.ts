@@ -23,5 +23,8 @@ export async function DELETE(request: NextRequest) {
   const id = searchParams.get("id") as string;
   if (!id) NextResponse.json({ message: "Id not provided" }, { status: 404 });
   console.log(id);
-  return await Flow.deleteOne(id as string);
+  await Flow.deleteOne({
+    _id: id,
+  });
+  return NextResponse.json({ message: "success" }, { status: 200 });
 }

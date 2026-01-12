@@ -1,35 +1,50 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useWorkflowStore } from '@/lib/workflow-store';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useWorkflowStore } from "@/lib/workflow-store";
 
 interface WaitConfigModalProps {
   nodeId: string;
   isOpen: boolean;
   onClose: () => void;
 }
+type TimeUnit = "seconds" | "minutes" | "hours";
 
-export default function WaitConfigModal({ nodeId, isOpen, onClose }: WaitConfigModalProps) {
+export default function WaitConfigModal({
+  nodeId,
+  isOpen,
+  onClose,
+}: WaitConfigModalProps) {
   const { nodes, updateNode } = useWorkflowStore();
   const node = nodes.find((n) => n.id === nodeId);
   const [delay, setDelay] = useState(node?.data?.config?.delay || 1);
-  const [unit, setUnit] = useState(node?.data?.config?.unit || 'minutes');
-
+  const [unit, setUnit] = useState<"seconds" | "minutes" | "hours">(
+    node?.data?.config?.unit || "minutes"
+  );
+  const handleUnitChange = (value: string) => {
+    setUnit(value as TimeUnit);
+  };
   useEffect(() => {
     if (node) {
       setDelay(node.data?.config?.delay || 1);
-      setUnit(node.data?.config?.unit || 'minutes');
+      setUnit(node.data?.config?.unit || "minutes");
     }
   }, [node]);
 
@@ -54,12 +69,12 @@ export default function WaitConfigModal({ nodeId, isOpen, onClose }: WaitConfigM
               type="number"
               min="1"
               value={delay}
-              onChange={(e) => setDelay(e.target.value)}
+              onChange={(e) => setDelay(Number(e.target.value))}
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="unit">Time Unit</Label>
-            <Select value={unit} onValueChange={setUnit}>
+            <Select value={unit} onValueChange={handleUnitChange}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>

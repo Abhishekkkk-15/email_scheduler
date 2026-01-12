@@ -1,6 +1,5 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import clientPromise from "./database/auth-client";
 import { User } from "@/lib/models/User";
 import { dbConnect } from "./database/config";
 console.log("sec", process.env.GOOGLE_CLIENT_SECRET);

@@ -1,4 +1,4 @@
-export type NodeType = 'leadSource' | 'coldEmail' | 'wait' | 'followupEmail';
+export type NodeType = "leadSource" | "coldEmail" | "wait" | "followupEmail";
 
 export interface WorkflowNode {
   id: string;
@@ -16,15 +16,23 @@ export interface LeadSourceConfig {
   source: string;
 }
 
-export interface EmailConfig {
+export type EmailConfig = {
   senderEmail: string;
-  emailType: 'welcome' | 'follow-up';
+  emailType: string;
   body: string;
-}
+  subject: string;
+  template: string;
+  mode: "single" | "csv";
+  senderName?: string;
+  singleEmail?: string;
+  csvEmails?: string[];
+  source: string;
+  delay: number;
+};
 
 export interface WaitConfig {
   delay: number;
-  unit: 'seconds' | 'minutes' | 'hours';
+  unit: "seconds" | "minutes" | "hours";
 }
 
 export interface Workflow {

@@ -14,6 +14,9 @@ interface NodeWithData extends Node {
       senderName?: string;
       singleEmail?: string;
       csvEmails?: string[];
+      source?: string;
+      delay?: number;
+      unit?: "seconds" | "minutes" | "hours";
     };
   };
 }
