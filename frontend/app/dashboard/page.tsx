@@ -24,7 +24,7 @@ export default async function page() {
     nodes: flow.nodes?.map((n: any) => ({
       ...n,
       id: n.id?.toString?.() ?? n.id,
-      position: { x: n.position.x, y: n.position.y },
+      position: { x: n?.position?.x, y: n?.position?.y },
     })),
   }));
   return (

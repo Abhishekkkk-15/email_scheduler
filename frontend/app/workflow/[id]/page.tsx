@@ -22,7 +22,7 @@ export default async function WorkflowPage({
   }
   const nodes = (workflow?.nodes || []).map((node: Node, i: number) => ({
     ...node,
-    position: { x: node.position.x, y: node.position.y },
+    position: { x: node?.position?.x, y: node?.position?.y },
   }));
   const edges = (workflow?.edges || []).map((edge: Edge, i: number) => ({
     ...edge,
