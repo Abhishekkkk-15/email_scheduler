@@ -8,8 +8,7 @@ const server = http.createServer(app);
 console.log("dd", process.env.FRONTEND_DOMAIN);
 const io = new Server(server, {
   cors: {
-    origin:
-      process.env.FRONTEND_DOMAIN || "https://email-scheduler-oqpk.vercel.app/",
+    origin: process.env.FRONTEND_DOMAIN,
     credentials: true,
   },
 });
