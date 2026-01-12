@@ -60,6 +60,7 @@
     "embla-carousel-react": "^8.3.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.5.1",
+    "framer-motion": "^12.26.1",
     "input-otp": "^1.2.4",
     "ioredis": "^5.9.1",
     "lucide-react": "^0.446.0",

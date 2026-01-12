@@ -3,10 +3,7 @@ import { io } from "../websocket/socketIO.js";
 console.log("CSV worker is listning");
 
 const emailQueue = new Queue("emailQueue", {
-  connection: {
-    host: "127.0.0.1",
-    port: 6379,
-  },
+  connection: redis,
   defaultJobOptions: {
     attempts: 3,
     backoff: {
@@ -67,10 +64,7 @@ new Worker(
     console.log("Completed sending all email");
   },
   {
-    connection: {
-      host: "127.0.0.1",
-      port: 6379,
-    },
+    connection: redis,
     concurrency: 5,
   }
 );

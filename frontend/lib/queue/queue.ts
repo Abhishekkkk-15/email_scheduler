@@ -2,10 +2,7 @@ import { Queue } from "bullmq";
 import { bullMqConnection } from "./redis";
 
 export const emailQueue = new Queue("emailQueue", {
-  connection: {
-    host: "127.0.0.1",
-    port: 6379,
-  },
+  connection: bullMqConnection,
   defaultJobOptions: {
     attempts: 3,
     backoff: {
@@ -18,10 +15,7 @@ export const emailQueue = new Queue("emailQueue", {
 });
 
 export const csvQueue = new Queue("csvQueue", {
-  connection: {
-    host: "127.0.0.1",
-    port: 6379,
-  },
+  connection: bullMqConnection,
   defaultJobOptions: {
     attempts: 3,
     backoff: {

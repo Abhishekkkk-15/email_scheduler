@@ -10,6 +10,8 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   ConnectionMode,
+  Node,
+  Edge,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useWorkflowStore } from "@/lib/workflow-store";
@@ -24,15 +26,32 @@ const nodeTypes = {
   wait: WaitNode,
 };
 
-export default function WorkflowCanvas() {
-  const { nodes, edges, setNodes, setEdges } = useWorkflowStore();
+export default function WorkflowCanvas({
+  fetchedNedes,
+  fetchedEdges,
+  flowId,
+}: {
+  fetchedNedes: Node[] | null;
+  fetchedEdges: Edge[] | null;
+  flowId?: string;
+}) {
+  console.log(fetchedNedes, fetchedEdges);
+  const { nodes, edges, setNodes, setEdges, setFlowId } = useWorkflowStore();
   const [localNodes, setLocalNodes, onNodesChange] = useNodesState(nodes);
   const [localEdges, setLocalEdges, onEdgesChange] = useEdgesState(edges);
 
   useEffect(() => {
     setLocalNodes(nodes);
   }, [nodes, setLocalNodes]);
-
+  useEffect(() => {
+    if (fetchedNedes && fetchedEdges) {
+      setNodes(fetchedNedes);
+      setEdges(fetchedEdges);
+      if (flowId) {
+        setFlowId(flowId);
+      }
+    }
+  }, [fetchedNedes, fetchedEdges, setNodes, setEdges]);
   useEffect(() => {
     setLocalEdges(edges);
   }, [edges, setLocalEdges]);
@@ -63,7 +82,14 @@ export default function WorkflowCanvas() {
     },
     [onNodesChange, localNodes, setNodes]
   );
-
+  useEffect(() => {
+    return () => {
+      setEdges([]);
+      setNodes([]);
+      setLocalEdges([]);
+      setLocalNodes([]);
+    };
+  }, []);
   return (
     <div className="h-full w-full">
       <ReactFlow

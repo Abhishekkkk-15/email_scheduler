@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { Plus, LogOut, Mail, Clock, HistoryIcon } from "lucide-react";
 
 import ExecutionHistoryDialog from "@/components/history/ExecutionHistoryDialog";
-
+import mongoose from "mongoose";
 const mockWorkflows = [
   {
     id: "1",
@@ -44,7 +44,7 @@ export default function DashboardPage({ workflows }: { workflows: any }) {
   const [showHistory, setShowHistory] = useState(false);
 
   const createNewWorkflow = () => {
-    router.push(`/workflow/${Date.now()}`);
+    router.push(`/workflow/create`);
   };
 
   return (
@@ -106,8 +106,8 @@ export default function DashboardPage({ workflows }: { workflows: any }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {workflows.map((workflow: any) => (
             <Card
-              key={workflow.id}
-              //   onClick={() => router.push(`/workflow/${workflow.id}`)}
+              key={workflow._id}
+              onClick={() => router.push(`/workflow/${workflow._id}`)}
               className="group cursor-pointer transition hover:border-primary/40">
               <CardHeader className="space-y-3">
                 <CardTitle className="flex items-center gap-2 text-base">

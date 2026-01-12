@@ -16,8 +16,6 @@ import { deleteFlow, userScheduleHistory } from "@/lib/api/api";
 import { socket } from "@/lib/websocket/socket";
 import { User } from "next-auth";
 
-/* ---------------- TYPES ---------------- */
-
 interface FlowNode {
   id: string;
   type: string;
@@ -26,6 +24,7 @@ interface FlowNode {
 
 interface FlowHistory {
   _id: string;
+  name: string;
   createdAt: string;
   nodes: FlowNode[];
   taskCompleted?: number;
@@ -36,8 +35,6 @@ interface ExecutionHistoryDialogProps {
   onClose: () => void;
   logedUser: User;
 }
-
-/* ---------------- COMPONENT ---------------- */
 
 export default function ExecutionHistoryDialog({
   isOpen,
@@ -51,8 +48,6 @@ export default function ExecutionHistoryDialog({
   const [flowStatus, setFlowStatus] = useState<Record<string, string>>({});
   const socketInitialized = useRef(false);
 
-  /* -------- Fetch history -------- */
-
   const fetchHistory = async () => {
     try {
       const { data } = await userScheduleHistory(logedUser.id!);
@@ -63,12 +58,8 @@ export default function ExecutionHistoryDialog({
     }
   };
 
-  /* -------- Task count helpers -------- */
-
   const getFilteredTaskCount = (flow: FlowHistory) =>
     flow.nodes.filter((n) => n.type !== "leadSource" && n.type !== "wait");
-
-  /* -------- Socket live updates -------- */
 
   useEffect(() => {
     if (socketInitialized.current) return;
@@ -97,13 +88,9 @@ export default function ExecutionHistoryDialog({
     };
   }, []);
 
-  /* -------- Open dialog -------- */
-
   useEffect(() => {
     if (isOpen) fetchHistory();
   }, [isOpen]);
-
-  /* -------- Delete flow -------- */
 
   const handleDelete = async (flowId: string) => {
     try {
@@ -114,34 +101,23 @@ export default function ExecutionHistoryDialog({
     }
   };
 
-  /* ---------------- RENDER ---------------- */
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl p-0 overflow-hidden">
-        {/* Header */}
         <DialogHeader className="px-6 py-4 border-b flex flex-row items-center justify-between">
           <DialogTitle className="text-xl font-semibold">
             Execution History
           </DialogTitle>
-
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="h-5 w-5" />
-          </Button>
         </DialogHeader>
 
-        {/* Body */}
         <ScrollArea className="max-h-[70vh] px-6 py-4">
           <div className="space-y-4">
             {history.map((flow) => {
               const totalTasks = getFilteredTaskCount(flow);
-              let mailCount = totalTasks.reduce(
-                (a, n) =>
-                  a + n.data?.config?.csvEmails
-                    ? 1
-                    : n.data?.config?.csvEmails?.length,
-                0
-              );
+              let mailCount = totalTasks.reduce((acc, n) => {
+                const csvLen = n.data?.config?.csvEmails?.length;
+                return acc + (csvLen && csvLen > 0 ? csvLen : 1);
+              }, 0);
 
               const completed =
                 liveTaskCount[flow._id] ?? flow.taskCompleted ?? 0;
@@ -152,14 +128,13 @@ export default function ExecutionHistoryDialog({
                 <div
                   key={flow._id}
                   className="rounded-xl border bg-background p-4 shadow-sm hover:shadow-md transition">
-                  {/* Top row */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="space-y-1 text-sm">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="font-medium">
-                          Flow ID:{" "}
+                          Name :{" "}
                           <span className="text-muted-foreground">
-                            {flow._id}
+                            {flow.name}
                           </span>
                         </p>
 
@@ -186,7 +161,6 @@ export default function ExecutionHistoryDialog({
                     </div>
                   </div>
 
-                  {/* Flow preview */}
                   <div className="mt-4 flex flex-wrap items-center gap-2">
                     {flow.nodes.map((node, idx) => (
                       <div key={node.id} className="flex items-center gap-2">

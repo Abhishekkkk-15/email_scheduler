@@ -2,6 +2,7 @@ import { Worker } from "bullmq";
 import { io } from "../websocket/socketIO.js";
 import { resend } from "../config/resend.js";
 import { Flow } from "../models/schema.js";
+import { redis } from "../config/redis.js";
 console.log("worker is listning");
 new Worker(
   "emailQueue",
@@ -11,16 +12,23 @@ new Worker(
     io.to(userId).emit("email-status", { status: "SENDING", flowId: emailId });
     try {
       const result = await resend.emails.send({
-        from: `${senderName} ${process.env.SENDER_EMAIL}`,
+        from: `${senderName || sender || "It's an automated mail"} ${
+          process.env.SENDER_EMAIL
+        }`,
         to: Array.isArray(to) ? to : [to],
         subject,
         html: body || "<p>Test</p>",
       });
 
       if (!result || result.error) {
+        io.to(userId).emit("email-status", {
+          status: "ERROR",
+          flowId: emailId,
+        });
         throw new Error(JSON.stringify(result));
       }
-      console.log("Email sent");
+      io.to(userId).emit("email-status", { status: "SENT", flowId: emailId });
+
       const task = await Flow.findByIdAndUpdate(
         emailId,
         { $inc: { taskCompleted: 1 } },
@@ -34,14 +42,10 @@ new Worker(
     } catch (error) {
       console.log("Error while send email", error);
     }
-    io.to(userId).emit("email-status", { status: "SENT", flowId: emailId });
     console.log("sent email to " + senderName);
   },
   {
-    connection: {
-      host: "127.0.0.1",
-      port: 6379,
-    },
+    connection: redis,
     concurrency: 5,
   }
 );

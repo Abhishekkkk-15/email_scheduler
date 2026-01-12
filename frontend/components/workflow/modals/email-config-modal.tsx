@@ -70,7 +70,9 @@ export default function EmailConfigModal({
     if (!node) return;
 
     const cfg = node.data?.config || {};
+    setSenderName(cfg.senderName || "");
     setSenderEmail(cfg.senderEmail || "");
+    setSingleEmail(cfg.singleEmail || "");
     setEmailType(cfg.emailType || "initial");
     setBody(cfg.body || "");
     setSubject(cfg.subject || "");

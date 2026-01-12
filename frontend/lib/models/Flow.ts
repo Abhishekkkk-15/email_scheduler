@@ -1,10 +1,19 @@
 import mongoose, { Schema, models, model } from "mongoose";
 
+const positionSchema = new Schema({
+  x: Number,
+  y: Number,
+});
+
 const nodeSchema = new Schema(
   {
     id: String,
     type: String,
     data: Schema.Types.Mixed,
+    position: positionSchema,
+    height: Number,
+    width: Number,
+    selected: Boolean,
   },
   { _id: false }
 );

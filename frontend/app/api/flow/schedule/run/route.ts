@@ -23,16 +23,32 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   await dbConnect();
-  const { nodes, edges } = await req.json();
+  const { nodes, edges, flowId } = await req.json();
   const name = nodes.find((n: any) => n.type == "leadSource");
-  console.log(name.data.config.source, name);
-  const flow = await Flow.create({
-    name: name.data.config.source,
-    userId: session.user.id,
-    userEmail: session.user.email,
-    nodes,
-    edges,
-  });
+  console.log("flowid ", flowId);
+  const id = flowId ? flowId : null;
+  let flow;
+  if (!id) {
+    flow = await Flow.create({
+      name: name.data.config.source,
+      userId: session.user.id,
+      userEmail: session.user.email,
+      nodes,
+      edges,
+    });
+  } else {
+    flow = await Flow.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          nodes,
+          edges,
+          updatedAt: new Date(),
+        },
+      },
+      { upsert: true, new: true }
+    );
+  }
 
   const leadSource = nodes.find((n: any) => n.type === "leadSource");
   if (!leadSource)
@@ -51,7 +67,7 @@ export async function POST(req: Request) {
     if (!node) {
       throw new Error(`Node not found: ${currentNodeId}`);
     }
-    console.log("mode", node.data.config.senderName);
+    console.log("mode", node.data.config);
     if (
       (node.type === "coldEmail" || node.type === "followupEmail") &&
       node.data.config.mode == "single"

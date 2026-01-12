@@ -21,16 +21,19 @@ interface NodeWithData extends Node {
 interface WorkflowState {
   nodes: NodeWithData[];
   edges: Edge[];
+  flowId: string;
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
   addNode: (node: Node) => void;
   updateNode: (id: string, data: any) => void;
   clearWorkflow: () => void;
+  setFlowId: (id: string) => void;
 }
 
 export const useWorkflowStore = create<WorkflowState>((set) => ({
   nodes: [],
   edges: [],
+  flowId: "",
   setNodes: (nodes) => set({ nodes }),
   setEdges: (edges) => set({ edges }),
   addNode: (node) => set((state) => ({ nodes: [...state.nodes, node] })),
@@ -41,4 +44,5 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
       ),
     })),
   clearWorkflow: () => set({ nodes: [], edges: [] }),
+  setFlowId: (id: string) => set({ flowId: id }),
 }));
