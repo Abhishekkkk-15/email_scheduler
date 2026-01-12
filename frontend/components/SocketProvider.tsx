@@ -5,20 +5,22 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 export function SocketProvider() {
-  const session = useSession();
-  const user = session.data?.user;
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+
   useEffect(() => {
-    if (user) {
-      if (!socket.connected) {
-        console.log("userId", user.id);
-        socket.auth = { userId: user.id };
-        socket.connect();
-        console.log("Websocket connection istablished");
-      }
+    if (!userId) return;
+
+    if (!socket.connected) {
+      socket.auth = { userId };
+      socket.connect();
+      console.log("WebSocket connected for user:", userId);
     }
+
     return () => {
       socket.disconnect();
     };
-  });
+  }, [userId]);
+
   return null;
 }

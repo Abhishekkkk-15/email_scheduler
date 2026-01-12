@@ -4,7 +4,8 @@ import { io } from "socket.io-client";
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const socket = io(BASE_URL, {
-  transports: ["polling", "websocket"], // polling first
+  autoConnect: false,
+  transports: ["polling", "websocket"],
   withCredentials: true,
   reconnection: true,
   reconnectionAttempts: Infinity,
