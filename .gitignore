@@ -8,7 +8,8 @@ frontend-old/.env
 
 # Ignore build files globally
 /build/
-
+.env
+.env*
 # Ignore IDE related files
 .idea/
 .vscode/
