@@ -58,6 +58,6 @@ app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
-server.listen(PORT, () => {
+server.listen(Number(PORT), () => {
   console.log(`Server running on port ${PORT}`);
 });
