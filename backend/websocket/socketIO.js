@@ -5,10 +5,12 @@ import { config } from "dotenv";
 config();
 const app = express();
 const server = http.createServer(app);
-
+console.log("dd", process.env.FRONTEND_DOMAIN);
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_DOMAIN,
+    origin:
+      process.env.FRONTEND_DOMAIN || "https://email-scheduler-oqpk.vercel.app/",
+    credentials: true,
   },
 });
 
