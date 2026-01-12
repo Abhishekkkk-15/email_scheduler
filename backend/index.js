@@ -15,7 +15,6 @@ import "./workers/queue.worker.js";
 import "./workers/csvhandler.worker.js";
 
 dotenv.config();
-const PORT = process.env.PORT;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -57,7 +56,12 @@ app.use(express.static(path.join(__dirname, "dist")));
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
+const rawPort = process.env.PORT;
+console.log("RAW PORT FROM ENV:", rawPort);
+const PORT = rawPort ? Number(rawPort) : 3000;
 
-server.listen(Number(PORT), () => {
-  console.log(`Server running on port ${PORT}`);
+console.log("FINAL PORT:", PORT);
+
+server.listen(PORT, "0.0.0.0", () => {
+  console.log("Server running on port", PORT);
 });
