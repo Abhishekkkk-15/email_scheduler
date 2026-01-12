@@ -1,5 +1,6 @@
 import { Queue, Worker } from "bullmq";
 import { io } from "../websocket/socketIO.js";
+import { redis } from "../config/redis.js";
 console.log("CSV worker is listning");
 
 const emailQueue = new Queue("emailQueue", {
