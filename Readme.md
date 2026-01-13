@@ -10,7 +10,7 @@ It combines a node-based workflow builder with a BullMQ + Redis worker architect
 </p>
 
 ## Demo
-https://email-scheduler-oqpk.vercel.app/dashboard
+https://email-scheduler-oqpk.vercel.app
 
 ## ✨ Highlights
 
