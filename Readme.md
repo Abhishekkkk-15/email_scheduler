@@ -77,7 +77,7 @@ https://email-scheduler-oqpk.vercel.app/dashboard
 ### 🖼️ Dashboard
 ![Dashboard](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/2_lbp8fk.jpg)
 
-### ⚡ Builder
+### ⚡ Flow Builder
 ![Builder](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/mail-scheduler_mofbfd.jpg)
 
 ### 📬 Email Scheduler Panel
