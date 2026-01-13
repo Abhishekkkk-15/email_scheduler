@@ -1,64 +1,138 @@
 # 📧 Email Scheduler (Automation Flow App)
 
-An email automation tool where users can create visual workflows to schedule emails at specific intervals.  
-Built with **React**, **React Flow**, **Node.js**, **Agenda**, and **Nodemailer** — featuring user authentication and backend scheduling magic.
+Workflow-Driven Email Automation Platform
 
-![Workflow Example](https://res.cloudinary.com/dha7ofrer/video/upload/v1744119950/email_scheduler_snapshot/epp8vegt0wsea2i1arq5.mkv)
-> Simple drag-and-drop UI for creating email automation workflows
+Email Scheduler is a visual email automation system that lets you design, schedule, and execute email workflows with real-time status tracking.
+It combines a node-based workflow builder with a BullMQ + Redis worker architecture for reliable, scalable background execution.
+
+<p align="center">
+<img src="https://res.cloudinary.com/dha7ofrer/image/upload/v1768291431/icon_aiyomx.svg" alt="logo" width="400">
+</p>
+
+## Demo
+https://email-scheduler-oqpk.vercel.app/dashboard
+
+## ✨ Highlights
+
+- 🧩 Visual workflow builder (React Flow–style)
+- ⚡ Real-time execution status via WebSockets
+- 🐂 BullMQ + Redis powered job queue
+- 🧵 Dedicated background workers
+- 📬 Template-based emails with variables
+- ⏳ Delays & follow-ups handled automatically
+- 📊 Live execution history & task counters
+- 🔐 Google OAuth authentication
 
 ---
 
-## 🚀 Features
+## 🚀 Core Features
 
-- 📬 Schedule emails visually using a flow-like interface
-- ⏰ Agenda-based job scheduling
-- 🔐 Secure authentication system
-- 📤 Automated email sending using Nodemailer
-- ⚙️ Backend-driven logic, minimal frontend distractions
+### Workflow Builder
+- Workflow Builder
+- Supported nodes:
+    - Lead Source
+    - Wait (delay)
+    - Cold Email
+    - Follow-up Email
+- Clear visual flow with node sequencing
+### Email Automation
+- Reusable email templates
+- Variable placeholders ({{name}}, {{company}})
+- Single email or CSV recipient support
+- Resend-based delivery
 
----
+### BullMQ Job System
+- Each workflow execution becomes a queue job
+- Redis-backed persistence
+- Retries & failure handling ready
+- Scales horizontally with workers
 
-## 🛠️ Tech Stack
+### Background Workers
+- Workers live inside backend service
+- Responsible for:
+    - Sending emails
+    - Emitting live status events
+- Decoupled from API request lifecycle
 
-### Frontend
-- **React**: UI framework
-- **React Flow**: Flow-based builder for automation design
+### Live Status Tracking
+- Socket events emitted from workers
 
-### Backend
-- **Node.js**: Runtime environment
-- **Express.js**: REST API framework
-- **Agenda**: Job scheduling for Node.js
-- **Nodemailer**: Email transport and delivery
-- **MongoDB**: Storage for scheduled jobs and users
+- Status flow:
+    - QUEUED
+    - PROCESSING
+    - SENDING
+    - SENT
+    - FAILED
+- Animated status badges in UI
 
+### Execution History
+- Per-flow execution logs
+- Live task count updates
+- Node sequence preview
+- Flow deletion & cleanup
 ---
 
 ## 📸 Screenshots
 
-### 🖼️ Flow Builder
-![Flow Builder Screenshot](https://res.cloudinary.com/dha7ofrer/image/upload/v1744117504/email_scheduler_snapshot/iair7kp792xj3rwtwlco.png)
+### 🖼️ Dashboard
+![Dashboard](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/2_lbp8fk.jpg)
+
+### ⚡ Builder
+![Builder](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/mail-scheduler_mofbfd.jpg)
 
 ### 📬 Email Scheduler Panel
-![Email Panel Screenshot](https://res.cloudinary.com/dha7ofrer/image/upload/v1744118060/email_scheduler_snapshot/eutlka4qixqtydzmsgtw.png)
+![Email Panel Screenshot](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/node_dz6fgr.jpg)
 
-### 🔐 Authentication Page
-![Auth Screenshot](https://res.cloudinary.com/dha7ofrer/image/upload/v1744118055/email_scheduler_snapshot/cq6kwevzuhlddaho3ypw.png)
+### 🔐 Execution History
+![Execution History](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/3_sp4jnk.jpg)
 
-> ⚠️ *Note: Styling is minimal — focus is purely on functionality.*
 
 ---
 
 ## 🧪 How It Works
 
-1. **Login / Sign up** – Simple auth system to protect your workspace
-2. **Create Email Flow** – Use the drag-and-drop builder to define:
-   - Email content
-   - Wait time (delays)
-   - Cold email or warm follow-ups
-3. **Save & Schedule** – Backend (using Agenda) registers jobs with MongoDB
-4. **Send** – Nodemailer handles email dispatch at the scheduled time
+1. Sign In
+    Authenticate with Google to access your workspace.
 
+2. Build Workflow
+    Create a flow using nodes:
+    - Define templates
+    - Add delays
+    - Configure follow-ups
+
+3. Save & Run
+  - Workflow is persisted
+  - BullMQ job is created
+  - Job enters Redis queue
+
+4. Worker Executes
+- Worker processes nodes sequentially
+- Sends emails
+- Applies delays
+- Emits socket events
+5. Track Live Execution
+- UI updates in real time as tasks progress.
 ---
+
+## 🛠️ Tech Stack
+### Frontend
+- Next.js
+- React Flow
+- shadcn/ui
+- Socket.IO (client)
+
+## Backend
+- Node.js
+- Express.js
+- MongoDB
+- Redis
+- BullMQ
+- Resend
+- socket.IO (server)
+
+## Auth
+- NextAuth.js
+- Google Auth
 
 ## 📦 Installation
 
@@ -69,35 +143,60 @@ git clone https://github.com/Abhishekkkk-15/email-schedular.git
 cd email-schedular 
 ```
 
-Backend Setup:
+### Backend Setup:
 ```bash
 cd server
-npm install
-# Create a .env file with your config (PORT, MONGO_URI, EMAIL, PASSWORD)
-npm start
-``` 
-
-Environment Variables:
+pnpm install
+```
+Create .env:
+```env
+MONGO_URI=
+JWT_SECRET=
+RESEND_API_KEY=
+SENDER_EMAIL=
+PORT=
+REDIS_URL=
+FRONTEND_DOMAIN=
+```
+Start Backend/Workers:
 ```bash
-MONGO_URI=Dmongo-db-url
-EMAIL_USER=nodemailer-email
-EMAIL_PASS=nodemailer-password
-JWT_SECRET = jwt-secret
-PORT=port
+pnpm start
+```
+> Workers run inside the backend process and listen to BullMQ queues.
+
+### Frontend Setup:
+
+```bash
+cd server
+pnpm install
+```
+Create .env
+
+```env
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+NEXT_PUBLIC_BACKEND_URL=
+MONGODB_URL=
+NEXTAUTH_SECRET=
+REDIS_URL=
+```
+Start Frontend:
+```bash
+pnpm start
 ```
 
-FrontEnd Setup:
-```bash
-cd client
-npm install
-npm run dev
-```
 
-Acknowledgements:
-- **React Flow** for the flow builder
-- **Agenda** for job scheduling
-- **Nodemailer** for handling emails
 
-**Live** : https://email-scheduler-vg44.onrender.com/
 
+## Authors
+
+- [@abhishekkkk](https://www.github.com/abhishekkkk-15)
+**Abhishek Jangid**
+
+- Backend-focused Full Stack Developer
+
+🔗 LinkedIn: https://www.linkedin.com/in/abhishek-jangid-3532b1323
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
 
