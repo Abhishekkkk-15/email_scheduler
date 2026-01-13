@@ -15,7 +15,8 @@ https://email-scheduler-oqpk.vercel.app/dashboard
 ## ✨ Highlights
 
 - 🧩 Visual workflow builder (React Flow–style)
-- ⚡ Real-time execution status via WebSockets
+- 🛠️ Real-time execution status via WebSockets
+- ⚡ CSV or single-recipient support
 - 🐂 BullMQ + Redis powered job queue
 - 🧵 Dedicated background workers
 - 📬 Template-based emails with variables
@@ -36,6 +37,7 @@ https://email-scheduler-oqpk.vercel.app/dashboard
     - Follow-up Email
 - Clear visual flow with node sequencing
 ### Email Automation
+- CSV or single-recipient support
 - Reusable email templates
 - Variable placeholders ({{name}}, {{company}})
 - Single email or CSV recipient support
@@ -75,17 +77,19 @@ https://email-scheduler-oqpk.vercel.app/dashboard
 ## 📸 Screenshots
 
 ### 🖼️ Dashboard
-![Dashboard](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/2_lbp8fk.jpg)
+![Dashboard](https://res.cloudinary.com/dha7ofrer/image/upload/v1768294120/222_hwkn96.jpg)
 
-### ⚡ Flow Builder
+### 🧩 Flow Builder
 ![Builder](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/mail-scheduler_mofbfd.jpg)
 
-### 📬 Email Scheduler Panel
+###  ⚡ Email Scheduler Panel
 ![Email Panel Screenshot](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/node_dz6fgr.jpg)
+
+### 📬 Template Builder
+![Template Builder](https://res.cloudinary.com/dha7ofrer/image/upload/v1768294187/re_qq8m4b.jpg)
 
 ### 🔐 Execution History
 ![Execution History](https://res.cloudinary.com/dha7ofrer/image/upload/v1768293260/3_sp4jnk.jpg)
-
 
 ---
 
