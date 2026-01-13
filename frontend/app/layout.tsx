@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { Suspense } from "react";
 import { Loading } from "@/components/hero/Loading";
+import { SocketProvider } from "@/components/SocketProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

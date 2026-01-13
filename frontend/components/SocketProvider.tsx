@@ -4,7 +4,7 @@ import { socket } from "@/lib/websocket/socket";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
-export function SocketProvider() {
+export function SocketProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
@@ -22,5 +22,5 @@ export function SocketProvider() {
     };
   }, [userId]);
 
-  return null;
+  return <div>{children}</div>;
 }

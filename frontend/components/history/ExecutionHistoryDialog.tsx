@@ -62,7 +62,6 @@ export default function ExecutionHistoryDialog({
     flow.nodes.filter((n) => n.type !== "leadSource" && n.type !== "wait");
 
   useEffect(() => {
-    if (socketInitialized.current) return;
     const handleTaskCount = (data: {
       flowId: string;
       taskCompleted: number;
@@ -72,19 +71,21 @@ export default function ExecutionHistoryDialog({
         [data.flowId]: data.taskCompleted,
       }));
     };
-    socket.on("email-status", (data: { flowId: string; status: string }) => {
-      console.log("email0sta", data);
+
+    const handleEmailStatus = (data: { flowId: string; status: string }) => {
+      console.log("email-status", data);
       setFlowStatus((prev) => ({
         ...prev,
         [data.flowId]: data.status,
       }));
-    });
+    };
+
     socket.on("taskCount", handleTaskCount);
-    socketInitialized.current = true;
+    socket.on("email-status", handleEmailStatus);
 
     return () => {
       socket.off("taskCount", handleTaskCount);
-      socketInitialized.current = false;
+      socket.off("email-status", handleEmailStatus);
     };
   }, []);
 
